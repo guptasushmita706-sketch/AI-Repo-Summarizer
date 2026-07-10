@@ -39,24 +39,51 @@
 <h1>Repository Analysis Result</h1>
 
 <div class="result-card">
-
 <h3>Repository Name</h3>
-<p>AI Repo Summarizer</p>
+<p id="repoName">Loading...</p>
 
 <h3>Description</h3>
-<p>An AI-powered tool to analyze GitHub repositories.</p>
+<p id="repoDescription">Loading...</p>
 
-<h3>Languages Used</h3>
-<p>HTML, CSS, JavaScript, Python</p>
+<h3>Repository URL</h3>
+<p id="repoLink">Loading...</p>
 
 <h3>AI Summary</h3>
-<p>
-This repository helps developers quickly understand GitHub projects using AI.
-</p>
+<p id="aiSummary">Analyzing repository...</p>
 
 </div>
 
 </section>
+<script>
+const repoUrl = localStorage.getItem("repoUrl");
 
+if (repoUrl) {
+    document.getElementById("repoLink").innerHTML =
+        `<a href="${repoUrl}" target="_blank">${repoUrl}</a>`;
+
+    const parts = repoUrl.split("/");
+
+    if (parts.length >= 5) {
+        const owner = parts[3];
+        const repo = parts[4];
+
+        document.getElementById("repoName").textContent = repo;
+
+        fetch(`https://api.github.com/repos/${owner}/${repo}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("repoDescription").textContent =
+                    data.description || "No description available.";
+
+                document.getElementById("aiSummary").textContent =
+                    `This repository belongs to ${owner}. Main language: ${data.language || "Not available"}. GitHub Stars: ${data.stargazers_count}.`;
+            })
+            .catch(() => {
+                document.getElementById("aiSummary").textContent =
+                    "Unable to fetch repository details.";
+            });
+    }
+}
+</script>
 </body>
 </html>
