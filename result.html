@@ -1,37 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Analysis Result</title>
+<title>Repository Analysis Result</title>
 
 <link rel="stylesheet" href="style.css">
-</head>
 
+</head>
 <body>
 
 <nav>
 <h2>AI Repo Summarizer</h2>
-</nav>
-<nav>
-
-<h2>AI Repo Summarizer</h2>
 
 <ul>
-
 <li><a href="index.html">Home</a></li>
-
 <li><a href="analyze.html">Analyze</a></li>
-
-<li><a href="result.html">Result</a></li>
-
 <li><a href="about.html">About</a></li>
-
 <li><a href="contact.html">Contact</a></li>
-
 </ul>
-
 </nav>
 
 <section class="result">
@@ -39,51 +26,83 @@
 <h1>Repository Analysis Result</h1>
 
 <div class="result-card">
+
 <h3>Repository Name</h3>
 <p id="repoName">Loading...</p>
+
+<h3>Owner</h3>
+<p id="repoOwner">Loading...</p>
 
 <h3>Description</h3>
 <p id="repoDescription">Loading...</p>
 
-<h3>Repository URL</h3>
+<h3>Primary Language</h3>
+<p id="repoLanguage">Loading...</p>
+
+<h3>GitHub Stars ⭐</h3>
+<p id="repoStars">Loading...</p>
+
+<h3>Repository Link</h3>
 <p id="repoLink">Loading...</p>
 
 <h3>AI Summary</h3>
-<p id="aiSummary">Analyzing repository...</p>
+<p id="aiSummary">
+Analyzing repository...
+</p>
 
 </div>
 
 </section>
+
 <script>
+
 const repoUrl = localStorage.getItem("repoUrl");
 
-if (repoUrl) {
-    document.getElementById("repoLink").innerHTML =
-        `<a href="${repoUrl}" target="_blank">${repoUrl}</a>`;
+if(repoUrl){
 
-    const parts = repoUrl.split("/");
+document.getElementById("repoLink").innerHTML =
+`<a href="${repoUrl}" target="_blank">${repoUrl}</a>`;
 
-    if (parts.length >= 5) {
-        const owner = parts[3];
-        const repo = parts[4];
+const parts = repoUrl.split("/");
 
-        document.getElementById("repoName").textContent = repo;
+if(parts.length>=5){
 
-        fetch(`https://api.github.com/repos/${owner}/${repo}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("repoDescription").textContent =
-                    data.description || "No description available.";
+const owner = parts[3];
+const repo = parts[4];
 
-                document.getElementById("aiSummary").textContent =
-                    `This repository belongs to ${owner}. Main language: ${data.language || "Not available"}. GitHub Stars: ${data.stargazers_count}.`;
-            })
-            .catch(() => {
-                document.getElementById("aiSummary").textContent =
-                    "Unable to fetch repository details.";
-            });
-    }
+fetch(`https://api.github.com/repos/${owner}/${repo}`)
+.then(response=>response.json())
+.then(data=>{
+
+document.getElementById("repoName").textContent=data.name;
+
+document.getElementById("repoOwner").textContent=data.owner.login;
+
+document.getElementById("repoDescription").textContent=
+data.description || "No description available.";
+
+document.getElementById("repoLanguage").textContent=
+data.language || "Not Available";
+
+document.getElementById("repoStars").textContent=
+data.stargazers_count;
+
+document.getElementById("aiSummary").textContent=
+`This GitHub repository is developed by ${data.owner.login}. It is mainly built using ${data.language || "multiple technologies"} and currently has ${data.stargazers_count} GitHub stars. The repository description suggests: "${data.description || "No description available"}".`;
+
+})
+.catch(()=>{
+
+document.getElementById("aiSummary").textContent=
+"Unable to fetch repository details.";
+
+});
+
 }
+
+}
+
 </script>
+
 </body>
 </html>
