@@ -1,116 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Repo Summarizer</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <!-- Navbar -->
-    <nav>
-        <h2>AI Repo Summarizer</h2>
+<div class="container">
+    <h1>🤖 AI Repo Summarizer</h1>
 
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="analyze.html">Analyze</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
+    <input
+        type="text"
+        id="repoUrl"
+        placeholder="Paste GitHub Repository URL">
 
-    <!-- Hero Section -->
+    <button onclick="analyzeRepo()">
+        Analyze Repo
+    </button>
 
-    <section class="hero">
-
-        <h1>Analyze GitHub Repositories with AI</h1>
-
-        <p>
-            Get instant AI-powered summaries of GitHub repositories.
-            Save time and understand projects quickly.
-        </p>
-
-        <a href="analyze.html">
-            <button>Analyze Now</button>
-        </a>
-
-    </section>
-<!-- Features Section -->
-
-<section class="features">
-
-    <h2>Key Features</h2>
-
-    <div class="feature-container">
-
-        <div class="card">
-            <h3>🤖 AI Summary</h3>
-            <p>Get AI-generated summaries of GitHub repositories.</p>
-        </div>
-
-        <div class="card">
-            <h3>📂 README Analysis</h3>
-            <p>Understand long README files in a few seconds.</p>
-        </div>
-
-        <div class="card">
-            <h3>⚡ Fast Results</h3>
-            <p>Analyze repositories quickly using GitHub API.</p>
-        </div>
-
-        <div class="card">
-            <h3>📊 Tech Stack Detection</h3>
-            <p>Identify programming languages and technologies used.</p>
-        </div>
-
-    </div>
-
-</section>
-<!-- How It Works Section -->
-
-<section class="how-it-works">
-
-<h2>How It Works</h2>
-
-<div class="steps">
-
-<div class="step">
-<h3>1️⃣ Enter GitHub URL</h3>
-<p>Paste any public GitHub repository link.</p>
+    <div id="result"></div>
 </div>
 
-<div class="step">
-<h3>2️⃣ AI Analysis</h3>
-<p>Our AI reads the repository and README file.</p>
-</div>
+<script src="script.js"></script>
 
-<div class="step">
-<h3>3️⃣ Smart Summary</h3>
-<p>Get an easy-to-understand summary instantly.</p>
-</div>
-
-</div>
-
-</section>
-<!-- Footer -->
-
-<footer>
-
-<h3>AI Repo Summarizer</h3>
-
-<p>
-Built for Lenovo LEAP AI Hackathon 2026
-</p>
-
-<p>
-© 2026 Sushmita Gupta. All Rights Reserved.
-</p>
-
-</footer>
 </body>
-
 </html>
