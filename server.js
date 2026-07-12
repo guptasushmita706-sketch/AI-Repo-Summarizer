@@ -9,14 +9,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(__dirname));
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(__dirname + "/index.html");
 });
 
 app.post("/summarize", async (req, res) => {
@@ -27,7 +27,7 @@ app.post("/summarize", async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `Summarize this GitHub repository: ${repo}`,
+          content: `Summarize this GitHub repository:\n${repo}`,
         },
       ],
       model: "llama-3.3-70b-versatile",
@@ -46,6 +46,13 @@ app.post("/summarize", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = app;
+const PORT = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
