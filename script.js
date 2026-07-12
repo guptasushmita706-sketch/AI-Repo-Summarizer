@@ -1,4 +1,3 @@
-alert("script.js loaded");
 async function analyzeRepo() {
     const repoUrl = document.getElementById("repoUrl").value.trim();
     const result = document.getElementById("result");
@@ -8,30 +7,22 @@ async function analyzeRepo() {
         return;
     }
 
-    result.innerHTML = "⏳ Analyzing repository...";
+    result.innerHTML = "⏳ Analyzing...";
 
     try {
-         const response = await fetch("https://YOUR-RENDER-URL.onrender.com/summarize", {
-        
-    
+        const response = await fetch("https://ai-repo-summarizer.onrender.com/summarize", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                repo: repoUrl
-            })
+            body: JSON.stringify({ repo: repoUrl })
         });
 
         const data = await response.json();
 
-        if (data.summary) {
-            result.innerHTML = data.summary;
-        } else {
-            result.innerHTML = "❌ " + (data.error || "Something went wrong.");
-        }
+        result.innerHTML = data.summary || data.error;
 
-    } catch (error) {
-        result.innerHTML = "❌ Error: " + error.message;
+    } catch (err) {
+        result.innerHTML = err.message;
     }
 }
