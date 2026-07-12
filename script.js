@@ -1,3 +1,4 @@
+alert("script.js loaded");
 async function analyzeRepo() {
     const repoUrl = document.getElementById("repoUrl").value.trim();
     const result = document.getElementById("result");
