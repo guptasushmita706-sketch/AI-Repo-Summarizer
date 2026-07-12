@@ -26,3 +26,4 @@ async function analyzeRepo() {
         result.innerHTML = err.message;
     }
 }
+document.getElementById("analyzeBtn").addEventListener("click", analyzeRepo);
