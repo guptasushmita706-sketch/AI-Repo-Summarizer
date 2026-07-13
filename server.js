@@ -44,7 +44,7 @@ app.post("/summarize", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+
 
 
 
