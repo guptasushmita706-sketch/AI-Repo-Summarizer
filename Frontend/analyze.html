@@ -1,56 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyze Repository | AI Repo Summarizer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Analyze Repository | AI Repo Summarizer</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .analyze-page {
+      min-height: calc(100vh - 75px);
+      padding: 80px 7%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(80, 90, 255, 0.18), transparent 35%);
+    }
+
+    .analyze-box {
+      width: 100%;
+      max-width: 850px;
+      padding: 55px 30px;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.035);
+    }
+
+    .scan-icon {
+      font-size: 55px;
+      margin-bottom: 20px;
+    }
+
+    .analyze-box h1 {
+      font-size: clamp(32px, 6vw, 55px);
+      margin-bottom: 15px;
+    }
+
+    .analyze-box h1 span {
+      background: linear-gradient(90deg, #8b7cff, #54d8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .analyze-box > p {
+      color: #929db5;
+      max-width: 650px;
+      margin: 0 auto 30px;
+    }
+
+    .repo-display {
+      padding: 16px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.2);
+      color: #cbd4ec;
+      word-break: break-all;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .scan-btn {
+      padding: 15px 28px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(90deg, #6c5ce7, #2589ff);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .scan-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(80,100,255,0.25);
+    }
+
+    .status {
+      margin-top: 25px;
+      color: #8f9ab5;
+      font-size: 14px;
+      min-height: 22px;
+    }
+
+    .loader {
+      width: 28px;
+      height: 28px;
+      margin: 18px auto;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: #7d83ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .xray-preview {
+      margin-top: 45px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .xray-item {
+      padding: 18px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .xray-item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .xray-item span {
+      color: #7f8ba5;
+      font-size: 12px;
+    }
+
+    @media (max-width: 650px) {
+      .analyze-page {
+        padding: 50px 5%;
+      }
+
+      .analyze-box {
+        padding: 40px 18px;
+      }
+
+      .xray-preview {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-    <h2>AI Repo Summarizer</h2>
+  <header class="navbar">
 
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="analyze.html">Analyze</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-    </ul>
-</nav>
-
-<section class="analyze">
-
-    <h1>Analyze GitHub Repository</h1>
-
-    <p>Paste any public GitHub Repository URL below.</p>
-
-    <input
-        type="text"
-        id="repoUrl"
-        placeholder="https://github.com/username/repository">
-
-    <br><br>
-
-    <button onclick="analyzeRepo()">
-        Analyze Repository
-    </button>
-
-    <div class="tips">
-        <h3>Supported Repositories</h3>
-
-        <ul>
-            <li>✔ Public GitHub Repositories</li>
-            <li>✔ HTML / CSS / JavaScript</li>
-            <li>✔ Python Projects</li>
-            <li>✔ Java Projects</li>
-            <li>✔ C / C++ Projects</li>
-        </ul>
+    <div class="logo">
+      <span>⚡</span> AI Repo Summarizer
     </div>
 
-</section>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="analyze.html">Analyze</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-<script src="script.js"></script>
+  </header>
+
+
+  <main class="analyze-page">
+
+    <div class="analyze-box">
+
+      <div class="scan-icon">🔍</div>
+
+      <h1>
+        Repository <span>Analysis</span>
+      </h1>
+
+      <p>
+        Your repository is ready to be scanned.
+        AI will analyze its structure, technologies,
+        important files and deeper X-Ray insights.
+      </p>
+
+
+      <div class="repo-display" id="repoDisplay">
+        Loading repository...
+      </div>
+
+
+      <button class="scan-btn" id="scanBtn" onclick="startAnalysis()">
+        🚀 Start AI Analysis
+      </button>
+
+
+      <div class="loader" id="loader"></div>
+
+      <div class="status" id="status">
+        Ready to analyze.
+      </div>
+
+
+      <div class="xray-preview">
+
+        <div class="xray-item">
+          <strong>📁 Structure</strong>
+          <span>Explore project organization</span>
+        </div>
+
+        <div class="xray-item">
+          <strong>⚙️ Technologies</strong>
+          <span>Detect tools and frameworks</span>
+        </div>
+
+        <div class="xray-item">
+          <strong>🔬 X-Ray</strong>
+          <span>Discover deeper connections</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <footer>
+
+    <p>© 2026 AI Repo Summarizer</p>
+
+    <p>Built for smarter GitHub exploration ⚡</p>
+
+  </footer>
+
+
+  <script>
+
+    const repoUrl = localStorage.getItem("repoUrl");
+
+    const repoDisplay = document.getElementById("repoDisplay");
+
+    if (repoUrl) {
+      repoDisplay.textContent = repoUrl;
+    } else {
+      repoDisplay.textContent = "No repository selected.";
+    }
+
+
+    async function startAnalysis() {
+
+      if (!repoUrl) {
+        alert("Please go back and enter a GitHub repository URL.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      const button = document.getElementById("scanBtn");
+      const loader = document.getElementById("loader");
+      const status = document.getElementById("status");
+
+      button.disabled = true;
+      button.style.opacity = "0.6";
+
+      loader.style.display = "block";
+
+      status.textContent =
+        "🔍 Scanning repository and preparing AI analysis...";
+
+
+      try {
+
+        const response = await fetch(
+          "https://ai-repo-summarizer.onrender.com/summarize",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              repo: repoUrl
+            })
+          }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+          throw new Error(data.error || "Analysis failed.");
+        }
+
+
+        localStorage.setItem(
+          "analysisResult",
+          JSON.stringify(data)
+        );
+
+
+        status.textContent =
+          "✅ Analysis complete! Opening results...";
+
+
+        setTimeout(() => {
+          window.location.href = "result.html";
+        }, 700);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+          "❌ " + error.message;
+
+        button.disabled = false;
+        button.style.opacity = "1";
+
+        loader.style.display = "none";
+      }
+
+    }
+
+  </script>
 
 </body>
 </html>
