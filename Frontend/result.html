@@ -1,116 +1,429 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Repository Analysis Result</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+  <title>Analysis Result | AI Repo Summarizer</title>
 
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .result-page {
+      padding: 60px 7%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .result-header span {
+      color: #7d83ff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .result-header h1 {
+      font-size: clamp(34px, 6vw, 58px);
+      margin: 12px 0;
+    }
+
+    .result-header p {
+      color: #8f9ab2;
+    }
+
+    .dashboard {
+      display: grid;
+      gap: 20px;
+    }
+
+    .result-card {
+      padding: 28px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .result-card h2 {
+      margin-bottom: 15px;
+      font-size: 21px;
+    }
+
+    .result-card p {
+      color: #a5aec2;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .repo-info {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .info-box {
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .info-box strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .info-box span {
+      color: #8994ad;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    .xray-card {
+      background:
+        radial-gradient(circle at top right, rgba(92,80,255,0.18), transparent 45%),
+        rgba(255,255,255,0.035);
+    }
+
+    .xray-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .xray-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      background: rgba(110,100,255,0.15);
+      color: #a9adff;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 100px 20px;
+      color: #8d98b0;
+    }
+
+    .error {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .error h2 {
+      margin-bottom: 10px;
+    }
+
+    .error p {
+      color: #8f9ab2;
+      margin-bottom: 25px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #6c5ce7, #2589ff);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .new-analysis {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 700px) {
+      .result-page {
+        padding: 45px 5%;
+      }
+
+      .repo-info {
+        grid-template-columns: 1fr;
+      }
+
+      .xray-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-<h2>AI Repo Summarizer</h2>
+  <header class="navbar">
 
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="analyze.html">Analyze</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</nav>
+    <div class="logo">
+      <span>⚡</span> AI Repo Summarizer
+    </div>
 
-<section class="result">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="analyze.html">Analyze</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
 
-<h1>Repository Analysis Result</h1>
+  </header>
 
-<div class="result-card">
 
-<h3>Repository Name</h3>
-<p id="repoName">Loading...</p>
+  <main class="result-page">
 
-<h3>Owner</h3>
-<p id="repoOwner">Loading...</p>
+    <div id="loading" class="loading">
+      🔍 Loading repository intelligence...
+    </div>
 
-<h3>Description</h3>
-<p id="repoDescription">Loading...</p>
 
-<h3>Primary Language</h3>
-<p id="repoLanguage">Loading...</p>
+    <div id="error" class="error" style="display:none;">
 
-<h3>GitHub Stars ⭐</h3>
-<p id="repoStars">Loading...</p>
+      <h2>⚠️ Unable to load results</h2>
 
-<h3>Repository Link</h3>
-<p id="repoLink">Loading...</p>
+      <p id="errorMessage">
+        Something went wrong.
+      </p>
 
-<h3>AI Summary</h3>
-<p id="aiSummary">
-Analyzing repository...
-</p>
+      <a href="index.html" class="back-btn">
+        ← Analyze Another Repository
+      </a>
 
-</div>
+    </div>
 
-</section>
 
-<script>
+    <section id="results" style="display:none;">
 
-const repoUrl = localStorage.getItem("repoUrl");
+      <div class="result-header">
 
-if(repoUrl){
+        <span>AI REPOSITORY INTELLIGENCE</span>
 
-document.getElementById("repoLink").innerHTML =
-`<a href="${repoUrl}" target="_blank">${repoUrl}</a>`;
+        <h1>Analysis <span>Complete</span></h1>
 
-const parts = repoUrl.split("/");
+        <p id="repoUrl"></p>
 
-if(parts.length>=5){
+      </div>
 
-const owner = parts[3];
-const repo = parts[4];
 
-fetch(`https://api.github.com/repos/${owner}/${repo}`)
-.then(response=>response.json())
-.then(data=>{
+      <div class="dashboard">
 
-document.getElementById("repoName").textContent=data.name;
 
-document.getElementById("repoOwner").textContent=data.owner.login;
+        <div class="result-card">
 
-document.getElementById("repoDescription").textContent=
-data.description || "No description available.";
+          <h2>🤖 AI Summary</h2>
 
-document.getElementById("repoLanguage").textContent=
-data.language || "Not Available";
+          <p id="summary">
+            No summary available.
+          </p>
 
-document.getElementById("repoStars").textContent=
-data.stargazers_count;
+        </div>
 
-document.getElementById("aiSummary").textContent=
-`This GitHub repository is developed by ${data.owner.login}. It is mainly built using ${data.language || "multiple technologies"} and currently has ${data.stargazers_count} GitHub stars. The repository description suggests: "${data.description || "No description available"}".`;
 
-})
-.catch(()=>{
+        <div class="result-card">
 
-document.getElementById("aiSummary").textContent=
-"Unable to fetch repository details.";
+          <h2>📊 Repository Overview</h2>
 
-});
+          <div class="repo-info">
 
-}
+            <div class="info-box">
+              <strong>📁 Repository</strong>
+              <span id="repoName">-</span>
+            </div>
 
-}
+            <div class="info-box">
+              <strong>⚙️ Technologies</strong>
+              <span id="technologies">-</span>
+            </div>
 
-</script>
+            <div class="info-box">
+              <strong>🧠 Analysis</strong>
+              <span>AI Powered</span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="result-card xray-card">
+
+          <div class="xray-title">
+
+            <h2>🔬 Repository X-Ray</h2>
+
+            <span class="xray-badge">
+              DEEP ANALYSIS
+            </span>
+
+          </div>
+
+          <p id="xray">
+            X-Ray analysis will appear here after the
+            repository intelligence engine is connected.
+          </p>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <h2>💡 AI Insights</h2>
+
+          <p id="insights">
+            AI insights will appear here.
+          </p>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="new-analysis">
+
+        <a href="index.html" class="back-btn">
+          🚀 Analyze Another Repository
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+
+    <p>© 2026 AI Repo Summarizer</p>
+
+    <p>Built for smarter GitHub exploration ⚡</p>
+
+  </footer>
+
+
+  <script>
+
+    const loading = document.getElementById("loading");
+    const results = document.getElementById("results");
+    const errorBox = document.getElementById("error");
+
+    const dataString = localStorage.getItem("analysisResult");
+    const repoUrlValue = localStorage.getItem("repoUrl");
+
+
+    function showError(message) {
+
+      loading.style.display = "none";
+      results.style.display = "none";
+      errorBox.style.display = "block";
+
+      document.getElementById("errorMessage").textContent = message;
+    }
+
+
+    function getValue(data, keys, fallback = "Not available") {
+
+      for (const key of keys) {
+
+        if (
+          data &&
+          data[key] !== undefined &&
+          data[key] !== null &&
+          data[key] !== ""
+        ) {
+          return data[key];
+        }
+
+      }
+
+      return fallback;
+    }
+
+
+    function displayResults(data) {
+
+      const summary = getValue(
+        data,
+        ["summary", "result", "description"],
+        "No AI summary was returned."
+      );
+
+      const technologies = getValue(
+        data,
+        ["technologies", "techStack", "tech"],
+        "Detection pending"
+      );
+
+      const repoName = getValue(
+        data,
+        ["repoName", "name", "repository"],
+        repoUrlValue || "Repository"
+      );
+
+      const xray = getValue(
+        data,
+        ["xray", "xRay", "repositoryXRay"],
+        "X-Ray engine will be connected in the next stage."
+      );
+
+      const insights = getValue(
+        data,
+        ["insights", "aiInsights"],
+        "Additional AI insights will appear here."
+      );
+
+
+      document.getElementById("repoUrl").textContent =
+        repoUrlValue || "GitHub Repository";
+
+      document.getElementById("summary").textContent = summary;
+
+      document.getElementById("repoName").textContent = repoName;
+
+      document.getElementById("technologies").textContent =
+        Array.isArray(technologies)
+          ? technologies.join(", ")
+          : technologies;
+
+      document.getElementById("xray").textContent = xray;
+
+      document.getElementById("insights").textContent = insights;
+
+
+      loading.style.display = "none";
+      results.style.display = "block";
+    }
+
+
+    try {
+
+      if (!dataString) {
+        showError(
+          "No analysis result found. Please analyze a repository first."
+        );
+      } else {
+
+        const data = JSON.parse(dataString);
+
+        displayResults(data);
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      showError(
+        "The saved analysis result could not be read."
+      );
+
+    }
+
+  </script>
 
 </body>
-<div id="result">
-Loading...
-</div>
-
-<script src="script.js"></script>
-<script>
-    getSummary();
-</script>
 </html>
