@@ -1,55 +1,70 @@
-console.log("✅ JS Connected");
+const API_URL = "https://ai-repo-summarizer.onrender.com/summarize";
 
-const analyzeBtn = document.getElementById("analyzeBtn");
+async function analyzeRepo(repoUrl) {
+  if (!repoUrl) {
+    throw new Error("Repository URL is required.");
+  }
 
-analyzeBtn.addEventListener("click", analyzeRepo);
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      repo: repoUrl
+    })
+  });
 
-async function analyzeRepo() {
+  let data;
 
-    const repoUrl = document.getElementById("repoUrl").value.trim();
-    const result = document.getElementById("result");
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Server returned an invalid response.");
+  }
 
-    if (!repoUrl) {
-        alert("Please enter a GitHub Repository URL.");
-        return;
-    }
+  if (!response.ok) {
+    throw new Error(data.error || "Repository analysis failed.");
+  }
 
-    result.innerHTML = "⏳ Analyzing...";
-
-    try {
-
-        const response = await fetch("https://ai-repo-summarizer.onrender.com/summarize", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                repo: repoUrl
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Server Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        console.log(data);
-
-        if (data.summary) {
-            result.innerHTML = data.summary;
-        } else if (data.error) {
-            result.innerHTML = "❌ " + data.error;
-        } else {
-            result.innerHTML = "⚠️ No response received.";
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        result.innerHTML = "❌ " + error.message;
-    }
-
+  return data;
 }
-//Update 
+
+
+function saveAnalysisResult(data, repoUrl) {
+  localStorage.setItem(
+    "analysisResult",
+    JSON.stringify(data)
+  );
+
+  localStorage.setItem(
+    "repoUrl",
+    repoUrl
+  );
+}
+
+
+function getSavedRepoUrl() {
+  return localStorage.getItem("repoUrl") || "";
+}
+
+
+function getSavedAnalysis() {
+  const data = localStorage.getItem("analysisResult");
+
+  if (!data) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(data);
+  } catch {
+    return null;
+  }
+}
+
+
+function clearAnalysis() {
+  localStorage.removeItem("repoUrl");
+  localStorage.removeItem("analysisResult");
+    }
