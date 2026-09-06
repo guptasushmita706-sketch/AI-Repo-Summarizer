@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +13,7 @@
 
   <header class="navbar">
     <div class="logo">
-      <span>⚡</span> AI Repo Summarizer
+      🔍 AI Repo Summarizer
     </div>
 
     <nav>
@@ -25,183 +24,185 @@
     </nav>
   </header>
 
+  <section class="hero">
 
-  <main>
+    <div class="hero-content">
 
-    <section class="hero">
+      <div class="badge">
+        AI-Powered Repository Intelligence
+      </div>
 
-      <div class="hero-content">
+      <h1>
+        Understand Any
+        <span>GitHub Repository</span>
+        Instantly.
+      </h1>
 
-        <div class="badge">
-          🚀 AI-Powered Repository Intelligence
+      <p>
+        Analyze repositories, understand their purpose, technologies,
+        structure, important files and hidden connections — all in one place.
+      </p>
+
+      <div class="repo-box">
+
+        <input
+          type="text"
+          id="repoUrl"
+          placeholder="Paste GitHub repository URL..."
+        >
+
+        <button onclick="analyzeRepository()">
+          Analyze Repository
+        </button>
+
+      </div>
+
+      <div class="examples">
+        <span>What you discover:</span>
+
+        <div class="features">
+          <span>🤖 AI Summary</span>
+          <span>🔬 Repository X-Ray</span>
+          <span>📁 Project Structure</span>
+          <span>⚙️ Technologies</span>
         </div>
+      </div>
 
-        <h1>
-          Understand Any
-          <span>GitHub Repository</span>
-          Instantly.
-        </h1>
+    </div>
+
+  </section>
+
+
+  <section class="feature-section">
+
+    <div class="section-heading">
+
+      <span>POWERFUL FEATURES</span>
+
+      <h2>
+        More Than Just a Summary
+      </h2>
+
+      <p>
+        Turn a complex repository into information that's easy to understand and explore.
+      </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+
+        <h3>AI Repository Summary</h3>
 
         <p>
-          Analyze repositories with AI and discover their purpose,
-          technologies, structure, important files and hidden
-          connections — all in one place.
+          Get a clear AI-generated explanation of what the repository does and why it exists.
         </p>
-
-
-        <div class="repo-box">
-
-          <input
-            type="text"
-            id="repoUrl"
-            placeholder="Paste GitHub repository URL..."
-          >
-
-          <button onclick="analyzeRepository()">
-            Analyze Repository →
-          </button>
-
-        </div>
-
-
-        <div class="examples">
-          <span>✨ What you can discover:</span>
-
-          <div class="features">
-            <span>🤖 AI Summary</span>
-            <span>🔍 Repository X-Ray</span>
-            <span>📁 Project Structure</span>
-            <span>⚙️ Technologies</span>
-          </div>
-        </div>
-
       </div>
 
-    </section>
 
+      <div class="feature-card highlight">
 
-    <section class="feature-section">
+        <div class="icon">🔬</div>
 
-      <div class="section-heading">
-        <span>POWERFUL FEATURES</span>
-
-        <h2>
-          More Than Just a Summary
-        </h2>
+        <h3>Repository X-Ray</h3>
 
         <p>
-          Turn a complex repository into information that is
-          easy to understand and explore.
+          Go deeper than a normal summary. Explore important files,
+          dependencies and how different parts connect.
         </p>
-      </div>
-
-
-      <div class="feature-grid">
-
-        <div class="feature-card">
-          <div class="icon">🤖</div>
-
-          <h3>AI Repository Summary</h3>
-
-          <p>
-            Get a clear AI-generated explanation of what the
-            repository does and why it exists.
-          </p>
-        </div>
-
-
-        <div class="feature-card highlight">
-          <div class="icon">🔍</div>
-
-          <h3>Repository X-Ray</h3>
-
-          <p>
-            Go deeper than a normal summary. Explore important
-            files, dependencies and how different parts connect.
-          </p>
-        </div>
-
-
-        <div class="feature-card">
-          <div class="icon">📊</div>
-
-          <h3>Project Intelligence</h3>
-
-          <p>
-            Discover technologies, project structure and useful
-            insights from the repository.
-          </p>
-        </div>
-
-
-        <div class="feature-card">
-          <div class="icon">⚡</div>
-
-          <h3>Fast Analysis</h3>
-
-          <p>
-            Analyze a repository quickly without manually reading
-            hundreds of files.
-          </p>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <section class="how-section">
-
-      <div class="section-heading">
-
-        <span>HOW IT WORKS</span>
-
-        <h2>
-          From URL to Understanding
-        </h2>
 
       </div>
 
 
-      <div class="steps">
+      <div class="feature-card">
 
-        <div class="step">
-          <div class="step-number">01</div>
+        <div class="icon">🧠</div>
 
-          <h3>Paste Repository</h3>
+        <h3>Project Intelligence</h3>
 
-          <p>
-            Enter any public GitHub repository URL.
-          </p>
-        </div>
-
-
-        <div class="step">
-          <div class="step-number">02</div>
-
-          <h3>AI Analyzes</h3>
-
-          <p>
-            Our system analyzes the repository structure and code.
-          </p>
-        </div>
-
-
-        <div class="step">
-          <div class="step-number">03</div>
-
-          <h3>Explore Insights</h3>
-
-          <p>
-            Understand the project through summaries and X-Ray insights.
-          </p>
-        </div>
+        <p>
+          Discover technologies, project structure and useful insights from the repository.
+        </p>
 
       </div>
 
-    </section>
 
-  </main>
+      <div class="feature-card">
+
+        <div class="icon">⚡</div>
+
+        <h3>Fast Analysis</h3>
+
+        <p>
+          Analyze a repository quickly without manually reading hundreds of files.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="how-section">
+
+    <div class="section-heading">
+
+      <span>HOW IT WORKS</span>
+
+      <h2>
+        From URL to Understanding
+      </h2>
+
+    </div>
+
+
+    <div class="steps">
+
+      <div class="step">
+
+        <div class="step-number">01</div>
+
+        <h3>Paste Repository</h3>
+
+        <p>
+          Enter any public GitHub repository URL.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">02</div>
+
+        <h3>AI Analyzes</h3>
+
+        <p>
+          Our system analyzes the repository structure and code.
+        </p>
+
+      </div>
+
+
+      <div class="step">
+
+        <div class="step-number">03</div>
+
+        <h3>Explore Insights</h3>
+
+        <p>
+          Understand the project through summaries and X-Ray insights.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
 
 
   <footer>
@@ -211,18 +212,19 @@
     </p>
 
     <p>
-      Built for smarter GitHub exploration ⚡
+      Built smart for GitHub exploration 🚀
     </p>
 
   </footer>
 
 
-  <script src="js/script.js"></script>
-
   <script>
     function analyzeRepository() {
 
-      const repoUrl = document.getElementById("repoUrl").value.trim();
+      const repoUrl = document
+        .getElementById("repoUrl")
+        .value
+        .trim();
 
       if (!repoUrl) {
         alert("Please enter a GitHub repository URL.");
