@@ -285,8 +285,16 @@ Return your answer in EXACTLY this JSON format:
   "summary": "Clear explanation of what this project does.",
   "technologies": ["technology1", "technology2"],
   "xray": "Explain how the major parts of this repository connect and work together.",
-  "insights": "Give useful architectural insights, important files, possible risks and improvement suggestions."
+  "insights": "Give useful architectural insights, important files, possible risks and improvement suggestions.",
+  "healthCheck": {
+    "security": "Identify possible security risks or exposed secrets.",
+    "dependencies": "Identify dependency or package concerns.",
+    "testing": "Check for testing-related files and signals.",
+    "architecture": "Identify important architecture concerns.",
+    "improvements": "Suggest practical improvements for the repository."
+  }
 }
+
 
 Do not use markdown.
 Return only valid JSON.
@@ -477,6 +485,9 @@ app.post("/summarize", async (req, res) => {
       insights:
         ai.insights,
 
+      healthCheck:
+  ai.healthCheck,
+      
       githubUrl:
         repoInfo.html_url
 
