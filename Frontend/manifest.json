@@ -1,1 +1,12 @@
 
+{
+  "name": "AI Repo Summarizer",
+  "short_name": "Repo Summarizer",
+  "description": "AI-powered GitHub repository analysis and X-Ray tool.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080b18",
+  "theme_color": "#080b18",
+  "orientation": "portrait",
+  "icons": []
+}
